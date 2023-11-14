@@ -27,7 +27,7 @@
     // "github>tuxpeople/shared//renovate/semanticCommits.json5"
   ],
   "ignorePresets": [
-    ":docker:pinDigests"
+    "docker:pinDigests"
   ],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖"
 }
