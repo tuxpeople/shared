@@ -24,7 +24,8 @@
     ":gomod",
     "helpers:pinGitHubActionDigests",
     "github>tuxpeople/shared//renovate/commitMessage.json5",
-    "github>tuxpeople/shared//renovate/autoMerge.json5"
+    "github>tuxpeople/shared//renovate/autoMerge.json5",
+    "github>tuxpeople/shared//renovate/customManagers.json5"
     // "github>tuxpeople/shared//renovate/labels.json5",
     // "github>tuxpeople/shared//renovate/semanticCommits.json5"
   ],
