@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      // Example:
+      //   # renovate: datasource=github-releases depName=goss-org/goss
+      //   GOSS_VERSION: v0.4.10        (workflow env)
+      //   ARG HUGO_VERSION=v0.154.5    (Dockerfile)
+      "customType": "regex",
+      "description": "Versions annotated with a `# renovate:` comment in workflows and Dockerfiles",
+      "managerFilePatterns": [
+        "/(^|/)\\.github/workflows/[^/]+\\.ya?ml$/",
+        "/(^|/)Dockerfile[^/]*$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?\\s*\\n\\s*(?:ARG\\s+|ENV\\s+)?[A-Za-z0-9_-]+\\s*[:=]\\s*[\"']?(?<currentValue>[^\\s\"']+)"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}"
+    }
+  ]
+}
