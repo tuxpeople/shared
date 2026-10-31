@@ -32,5 +32,8 @@
   "ignorePresets": [
     "docker:pinDigests"
   ],
+  // Let Renovate merge only when all checks are green (GitHub auto-merge
+  // would merge right away on repos without required checks)
+  "platformAutomerge": false,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖"
 }
