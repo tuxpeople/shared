@@ -9,10 +9,16 @@
   // (security:minimumReleaseAgeNpm).
   //
   // Usage: "extends": ["github>tuxpeople/shared//renovate/minimumReleaseAge.json5"]
+  //
+  // Only new versions (major/minor/patch): pinning a digest or a digest
+  // refresh of the same version is not a new release, and Renovate has no
+  // release timestamp for it, so the check would stay pending forever
+  // (seen in tuxpeople/python-ipam#120, "pin dependencies").
   "packageRules": [
     {
       "description": "Wait 3 days before proposing new PyPI and GitHub releases",
       "matchDatasources": ["pypi", "github-releases", "github-tags"],
+      "matchUpdateTypes": ["major", "minor", "patch"],
       "minimumReleaseAge": "3 days"
     }
   ]
