@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  // Opt-in: wait before proposing new releases, so a compromised or broken
+  // release can be pulled from the registry before it is merged.
+  //
+  // Only datasources that report a release timestamp. Docker is excluded on
+  // purpose: digests (e.g. Chainguard `latest`) have no timestamp and would
+  // never pass the check. npm is already covered by config:best-practices
+  // (security:minimumReleaseAgeNpm).
+  //
+  // Usage: "extends": ["github>tuxpeople/shared//renovate/minimumReleaseAge.json5"]
+  "packageRules": [
+    {
+      "description": "Wait 3 days before proposing new PyPI and GitHub releases",
+      "matchDatasources": ["pypi", "github-releases", "github-tags"],
+      "minimumReleaseAge": "3 days"
+    }
+  ]
+}
