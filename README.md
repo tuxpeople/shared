@@ -29,3 +29,11 @@ Usage:
 ## Workflows
 
 `workflows/` contains workflow templates to copy into a repository.
+
+`.github/workflows/` contains reusable workflows, called with a pinned reference (Renovate keeps it current):
+
+| Workflow | Purpose |
+|---|---|
+| `ghcr-cleanup.yml` | Monthly GHCR cleanup: tagged releases after 36 months, untagged and `sha-*` after 12 months, multi-arch safe. Usage in the file header |
+
+Changes here reach a repository only when its pin is updated, so a mistake does not hit all repositories at once.
