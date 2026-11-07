@@ -12,6 +12,12 @@
       "description": "Auto merge others",
       "automerge": true,
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Reusable workflows of this repository: PR checks do not run them, so review by hand",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["tuxpeople/shared"],
+      "automerge": false
     }
   ]
 }
