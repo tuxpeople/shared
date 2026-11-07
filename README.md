@@ -35,5 +35,9 @@ Usage:
 | Workflow | Purpose |
 |---|---|
 | `ghcr-cleanup.yml` | Monthly GHCR cleanup: tagged releases after 36 months, untagged and `sha-*` after 12 months, multi-arch safe. Usage in the file header |
+| `release-please.yml` | Maintains the release PR, creates tag and GitHub Release. Usage in the file header |
+| `container-release.yml` | Multi-arch image to GHCR, Cosign, Trivy, SBOM, attestations; public repositories only. Tests stay in the caller. Usage in the file header |
 
 Changes here reach a repository only when its pin is updated, so a mistake does not hit all repositories at once.
+
+The actions pinned in these workflows are kept current by Renovate in this repository. Merged updates reach the callers only with a new tag.
