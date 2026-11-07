@@ -40,4 +40,9 @@ Usage:
 
 Changes here reach a repository only when its pin is updated, so a mistake does not hit all repositories at once.
 
-The actions pinned in these workflows are kept current by Renovate in this repository. Merged updates reach the callers only with a new tag.
+### Updating the reusable workflows
+
+1. Renovate keeps the actions pinned in these workflows current and merges them here on its own. Nothing reaches a caller yet.
+2. Set a new tag **by hand**, about once a month or after a change that matters. Each tag is a deliberate step: without it, the callers keep their pin and the actions in it age unnoticed.
+3. Renovate then opens a PR per calling repository. These are **not automerged** (`renovate/autoMerge.json5`): the release and cleanup workflows do not run in PR checks, so a mistake would only show up at the next release, in all repositories.
+4. Merge one repository first and wait for a real run, then the others.
