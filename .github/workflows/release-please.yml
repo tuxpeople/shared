@@ -1,0 +1,62 @@
+name: "Release: release-please"
+
+# Reusable release-please run: maintains the release PR, and creates the tag
+# and GitHub Release when that PR is merged.
+#
+# Requirements in the calling repository:
+# - release-please-config.json and .release-please-manifest.json
+# - variable RELEASE_APP_CLIENT_ID, secret RELEASE_APP_PRIVATE_KEY (a GitHub
+#   App token instead of GITHUB_TOKEN: PRs opened with GITHUB_TOKEN need manual
+#   approval before their checks run)
+#
+#   jobs:
+#     release-please:
+#       if: github.event_name == 'push'
+#       permissions:
+#         contents: read
+#       uses: tuxpeople/shared/.github/workflows/release-please.yml@<sha> # vX.Y.Z
+#       with:
+#         client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+#       secrets:
+#         private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+on:
+  workflow_call:
+    inputs:
+      client-id:
+        description: "Client ID of the release GitHub App"
+        type: string
+        required: true
+    secrets:
+      private-key:
+        description: "Private key of the release GitHub App"
+        required: true
+    outputs:
+      released:
+        description: "'true' when this run created a release"
+        value: ${{ jobs.release-please.outputs.released }}
+      version:
+        description: "Version of the created release"
+        value: ${{ jobs.release-please.outputs.version }}
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.rp.outputs.release_created }}
+      version: ${{ steps.rp.outputs.version }}
+    steps:
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: ${{ inputs.client-id }}
+          private-key: ${{ secrets.private-key }}
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: rp
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
