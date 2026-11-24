@@ -26,10 +26,18 @@ name: "Cleanup: GHCR packages"
 #       uses: tuxpeople/shared/.github/workflows/ghcr-cleanup.yml@<sha> # vX.Y.Z
 #       with:
 #         dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run }}
+#         runs-on: self-hosted   # optional, default ubuntu-latest
 
 on:
   workflow_call:
     inputs:
+      runs-on:
+        description: >-
+          Runner for the job: a label such as "self-hosted", or a JSON list of
+          labels such as '["self-hosted", "linux"]'. Private repositories that
+          ran out of included minutes use their own runner.
+        type: string
+        default: ubuntu-latest
       packages:
         description: "Comma-separated package names. Empty = package named like the repository."
         type: string
@@ -57,7 +65,7 @@ permissions:
 
 jobs:
   cleanup:
-    runs-on: ubuntu-latest
+    runs-on: ${{ startsWith(inputs.runs-on, '[') && fromJSON(inputs.runs-on) || inputs.runs-on }}
     steps:
       # Default: package name = repository name (github.event has no
       # repository object on scheduled runs)
