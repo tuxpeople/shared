@@ -39,6 +39,13 @@ name: "Release: container image"
 on:
   workflow_call:
     inputs:
+      runs-on:
+        description: >-
+          Runner for the job: a label such as "self-hosted", or a JSON list of
+          labels such as '["self-hosted", "linux"]'. Private repositories that
+          ran out of included minutes use their own runner.
+        type: string
+        default: ubuntu-latest
       ref:
         description: "Tag/Branch/SHA to build"
         type: string
@@ -66,7 +73,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ startsWith(inputs.runs-on, '[') && fromJSON(inputs.runs-on) || inputs.runs-on }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

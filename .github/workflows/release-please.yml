@@ -17,12 +17,20 @@ name: "Release: release-please"
 #       uses: tuxpeople/shared/.github/workflows/release-please.yml@<sha> # vX.Y.Z
 #       with:
 #         client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+#         runs-on: self-hosted   # optional, default ubuntu-latest
 #       secrets:
 #         private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
 on:
   workflow_call:
     inputs:
+      runs-on:
+        description: >-
+          Runner for the job: a label such as "self-hosted", or a JSON list of
+          labels such as '["self-hosted", "linux"]'. Private repositories that
+          ran out of included minutes use their own runner.
+        type: string
+        default: ubuntu-latest
       client-id:
         description: "Client ID of the release GitHub App"
         type: string
@@ -44,7 +52,7 @@ permissions:
 
 jobs:
   release-please:
-    runs-on: ubuntu-latest
+    runs-on: ${{ startsWith(inputs.runs-on, '[') && fromJSON(inputs.runs-on) || inputs.runs-on }}
     outputs:
       released: ${{ steps.rp.outputs.release_created }}
       version: ${{ steps.rp.outputs.version }}

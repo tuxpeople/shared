@@ -38,6 +38,8 @@ Usage:
 | `release-please.yml` | Maintains the release PR, creates tag and GitHub Release. Usage in the file header |
 | `container-release.yml` | Multi-arch image to GHCR, Cosign, Trivy, SBOM, attestations; public repositories only. Tests stay in the caller. Usage in the file header |
 
+All reusable workflows take an optional input `runs-on` (default `ubuntu-latest`): a runner label such as `self-hosted`, or a JSON list of labels such as `'["self-hosted", "linux"]'`. The jobs of a reusable workflow run, and are billed, in the calling repository; private repositories that used up their included minutes pass their own runner.
+
 Changes here reach a repository only when its pin is updated, so a mistake does not hit all repositories at once.
 
 ### Updating the reusable workflows
